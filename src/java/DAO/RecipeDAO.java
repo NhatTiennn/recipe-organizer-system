@@ -57,7 +57,8 @@ public class RecipeDAO {
         Connection con = DBContext.makeConnection();
         PreparedStatement stm = con.prepareStatement("select * from [Recipe] a join [User] b"
                 + " on a.userID = b.userID order by [recipeID] "
-                + "offset ? rows fetch next 9 rows only");
+                + "offset ? rows fetch next 9 rows only"
+        );
         stm.setInt(1, (index - 1) * 9);
         ResultSet rs = stm.executeQuery();
         list = new ArrayList<>();
@@ -71,6 +72,8 @@ public class RecipeDAO {
             recipe.setDescription(rs.getString("description"));
             recipe.setCookingTime(rs.getDouble("cookingTime"));
             recipe.setImageRecipe(rs.getString("imageRecipe"));
+//            recipe.setUserCount(rs.getInt("userCount"));
+//            recipe.setTotalScore(rs.getInt("totalScore"));
             recipe.setStatus(rs.getBoolean("status"));
             list.add(recipe);
         }

@@ -32,15 +32,14 @@
                                                     <a href="#">By ${recipe.userName}</a>
                                                 </div>
                                                 <!-- Post Date -->
-
                                             </div>
                                             <!-- Post Comment & Share Area -->
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked" style="margin-right: 10px;"></span>
-                                            <span > 300 ratings</span>
+                                            <span class="fa fa-star <c:if test="${recipe.totalScore/recipe.userCount >= 1}">checked</c:if>"></span>
+                                            <span class="fa fa-star <c:if test="${recipe.totalScore/recipe.userCount >= 2}">checked</c:if>"></span>
+                                            <span class="fa fa-star <c:if test="${recipe.totalScore/recipe.userCount >= 3}">checked</c:if>"></span>
+                                            <span class="fa fa-star <c:if test="${recipe.totalScore/recipe.userCount >= 4}">checked</c:if>"></span>
+                                            <span class="fa fa-star <c:if test="${recipe.totalScore/recipe.userCount == 5}">checked</c:if>" style="margin-right: 10px;"></span>
+                                            <span> 300 ratings</span>
                                         </div>
                                         <a href="<c:url value="/recipe/recipeDetail.do?recipeID=${recipe.recipeID}"/>">
                                             <h4 class="post-headline">

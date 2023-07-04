@@ -132,27 +132,26 @@ public class Save_FavoriteController extends HttpServlet {
     protected void addToFavourite(HttpServletRequest request, HttpServletResponse response) {
         String op = request.getParameter("op");
         switch (op) {
-            case "Like": {
+            case "Favorite": {
                 try {
                     int recipeID = Integer.parseInt(request.getParameter("recipeID"));
                     int userID = Integer.parseInt(request.getParameter("userID"));
                     Save_favoriteDAO sfDAO = new Save_favoriteDAO();
-                    FavoriteDTO check = sfDAO.getOneFavorite(recipeID);
-
+                    FavoriteDTO check = sfDAO.getOneFavorite(recipeID, userID);
                     if (check == null) {
                         FavoriteDTO favorite = new FavoriteDTO();
                         favorite.setRecipeID(recipeID);
                         favorite.setUserID(userID);
                         sfDAO.addFavoriteByID(recipeID, userID);
-                        request.setAttribute("check", check);
+                        response.sendRedirect(request.getContextPath() + "/recipe/recipeDetail.do?recipeID=" + recipeID);
+                    }else {
                         response.sendRedirect(request.getContextPath() + "/recipe/recipeDetail.do?recipeID=" + recipeID);
                     }
-                    request.setAttribute("check", check);
-                    response.sendRedirect(request.getContextPath() + "/recipe/recipeDetail.do?recipeID=" + recipeID);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+            break;
         }
     }
 
@@ -171,8 +170,10 @@ public class Save_FavoriteController extends HttpServlet {
                         save.setUserID(userID);
                         sfDAO.addSavedByID(recipeID, userID);
                         response.sendRedirect(request.getContextPath() + "/recipe/recipeDetail.do?recipeID=" + recipeID);
+                    }else {
+                        response.sendRedirect(request.getContextPath() + "/recipe/recipeDetail.do?recipeID=" + recipeID);
                     }
-                    response.sendRedirect(request.getContextPath() + "/recipe/recipeDetail.do?recipeID=" + recipeID);
+                    
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -189,14 +190,28 @@ public class Save_FavoriteController extends HttpServlet {
         switch (op) {
             case "Remove": {
                 try {
-                    int favoriteRecipeID = Integer.parseInt(request.getParameter("favoriteRecipeID"));
+                    int userID = Integer.parseInt(request.getParameter("userID"));
+                    int recipeID = Integer.parseInt(request.getParameter("recipeID"));
                     Save_favoriteDAO sfDAO = new Save_favoriteDAO();
-                    sfDAO.removeFavoriteRecipe(favoriteRecipeID);
-                    response.sendRedirect(request.getContextPath() + "/save_favorite/favorite.do?userID=" + user.getUserID());
+                    sfDAO.removeFavoriteRecipe(userID, recipeID);
+                    response.sendRedirect(request.getContextPath() + "/save_favorite/saved.do?userID=" + user.getUserID());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+            break;
+            case "remove": {
+                try {
+                    int userID = Integer.parseInt(request.getParameter("userID"));
+                    int recipeID = Integer.parseInt(request.getParameter("recipeID"));
+                    Save_favoriteDAO sfDAO = new Save_favoriteDAO();
+                    sfDAO.removeFavoriteRecipe(userID, recipeID);
+                    response.sendRedirect(request.getContextPath() + "/recipe/recipeDetail.do?recipeID=" + recipeID);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            break;
         }
     }
 

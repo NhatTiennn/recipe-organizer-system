@@ -59,14 +59,15 @@ public class Save_favoriteDAO {
         return save;
     }
 
-    public SaveDTO getSavedRecipeID(int recipeID) throws SQLException {
+    public SaveDTO getSavedRecipeID(int recipeID, int userID) throws SQLException {
         SaveDTO save = null;
         Connection con = DBContext.makeConnection();
         PreparedStatement stm = con.prepareStatement("select * from SavedRecipes a join Recipe b "
                 + "on a.recipeID = b.recipeID "
                 + "join [User] c on b.userID = c.userID "
-                + "where a.recipeID = ?");
+                + "where a.recipeID = ? and a.userID = ?");
         stm.setInt(1, recipeID);
+        stm.setInt(2, userID);
         ResultSet rs = stm.executeQuery();
         if (rs.next()) {
             save = new SaveDTO();
@@ -97,6 +98,17 @@ public class Save_favoriteDAO {
         stm.executeUpdate();
         con.close();
     }
+    
+    public int totalSavedORecipe(int recipeID) throws SQLException {
+        Connection con = DBContext.makeConnection();
+        PreparedStatement stm = con.prepareStatement("select count(*) from SavedRecipes where recipeID = ?");
+        stm.setInt(1, recipeID);
+        ResultSet rs = stm.executeQuery();
+        while(rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
+    }
 
     //===================================================================================================
     public List<FavoriteDTO> getFavorite(int userID) throws SQLException {
@@ -120,11 +132,32 @@ public class Save_favoriteDAO {
         return list;
     }
 
-    public FavoriteDTO getOneFavorite(int favoriteRecipeID) throws SQLException {
+    public FavoriteDTO getOneFavorite(int recipeID, int userID) throws SQLException {
         FavoriteDTO favorite = null;
         Connection con = DBContext.makeConnection();
-        PreparedStatement stm = con.prepareStatement("select * from FavoriteRecipes where favoritedRecipeID = ?");
-        stm.setInt(1, favoriteRecipeID);
+        PreparedStatement stm = con.prepareStatement("select * from FavoriteRecipes where recipeID = ? and userID = ?");
+        stm.setInt(1, recipeID);
+        stm.setInt(2, userID);
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            favorite = new FavoriteDTO();
+            favorite.setFavoriteRecipeID(rs.getInt("favoriteRecipeID"));
+            favorite.setRecipeID(rs.getInt("recipeID"));
+            favorite.setUserID(rs.getInt("userID"));
+        }
+        con.close();
+        return favorite;
+    }
+
+    public FavoriteDTO getFavoriteRecipeID(int recipeID, int userID) throws SQLException {
+        FavoriteDTO favorite = null;
+        Connection con = DBContext.makeConnection();
+        PreparedStatement stm = con.prepareStatement("select * from FavoriteRecipes a join Recipe b "
+                + "on a.recipeID = b.recipeID "
+                + "join [User] c on b.userID = c.userID "
+                + "where a.recipeID = ? and a.userID = ?");
+        stm.setInt(1, recipeID);
+        stm.setInt(2, userID);
         ResultSet rs = stm.executeQuery();
         if (rs.next()) {
             favorite = new FavoriteDTO();
@@ -138,38 +171,32 @@ public class Save_favoriteDAO {
         return favorite;
     }
 
-    public FavoriteDTO getFavoriteRecipeID(int favoriteRecipeID) throws SQLException {
-        FavoriteDTO favorite = null;
+    public void addFavoriteByID(int recipeID, int userID) throws SQLException {
         Connection con = DBContext.makeConnection();
-        PreparedStatement stm = con.prepareStatement("select * from FavoriteRecipes where favoriteRecipeID = ?");
-        stm.setInt(1, favoriteRecipeID);
-        ResultSet rs = stm.executeQuery();
-        if (rs.next()) {
-            favorite = new FavoriteDTO();
-            favorite.setFavoriteRecipeID(rs.getInt("favoriteRecipeID"));
-            favorite.setRecipeID(rs.getInt("recipeID"));
-            favorite.setImageRecipe(rs.getString("imageRecipe"));
-            favorite.setRecipeName(rs.getString("recipeName"));
-            favorite.setUserID(rs.getInt("userID"));
-        }
-        con.close();
-        return favorite;
-    }
-
-    public void addFavoriteByID(int favoriteRecipeID, int userID) throws SQLException {
-        Connection con = DBContext.makeConnection();
-        PreparedStatement stm = con.prepareStatement("insert FavoriteRecipes values(?, ?)");
-        stm.setInt(1, favoriteRecipeID);
+        PreparedStatement stm = con.prepareStatement("insert FavoriteRecipes values(?,?)");
+        stm.setInt(1, recipeID);
         stm.setInt(2, userID);
         stm.executeUpdate();
         con.close();
     }
 
-    public void removeFavoriteRecipe(int favoriteRecipeID) throws SQLException {
+    public void removeFavoriteRecipe(int userID,int recipeID) throws SQLException {
         Connection con = DBContext.makeConnection();
-        PreparedStatement stm = con.prepareStatement("delete FavoriteRecipes where favoriteRecipeID = ?");
-        stm.setInt(1, favoriteRecipeID);
+        PreparedStatement stm = con.prepareStatement("delete FavoriteRecipes where userID= ? and recipeID = ?");
+        stm.setInt(1, userID);
+        stm.setInt(2, recipeID);
         stm.executeUpdate();
         con.close();
+    }
+    
+    public int totalFavoriteORecipe(int recipeID) throws SQLException {
+        Connection con = DBContext.makeConnection();
+        PreparedStatement stm = con.prepareStatement("select count(*) from FavoriteRecipes where recipeID = ?");
+        stm.setInt(1, recipeID);
+        ResultSet rs = stm.executeQuery();
+        while(rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
     }
 }

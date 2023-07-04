@@ -22,6 +22,9 @@ public class RecipeDTO {
     private double cookingTime;
     private String imageRecipe;
     private int savedRecipeID;
+    private int totalScore;
+    private int userCount;
+    private double avgRate;
     private boolean status;
 
     public RecipeDTO() {
@@ -119,5 +122,31 @@ public class RecipeDTO {
     public void setSavedRecipeID(int savedRecipeID) {
         this.savedRecipeID = savedRecipeID;
     }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public int getUserCount() {
+        return userCount;
+    }
+
+    public void setUserCount(int userCount) {
+        this.userCount = userCount;
+    }
+
+    public double getAvgRate() {
+        return avgRate;
+    }   
+
+    public void setAvgRate(double avgRate) {
+        this.avgRate = avgRate;
+    }
+
+    
 
 }

@@ -18,14 +18,15 @@ import java.sql.SQLException;
  */
 public class RatingDAO {
     
-    public RatingDTO getRatingRecipe(int userID) throws SQLException {
+    public RatingDTO getRatingRecipe(int recipeID, int userID) throws SQLException {
         RatingDTO rating = null;
         Connection con = DBContext.makeConnection();
         PreparedStatement stm = con.prepareStatement("select * from Rating a join Recipe b"
                 + " on a.recipeID = b.recipeID "
                 + "join [User] c on b.userID = c.userID "
-                + "where a.recipeID = ?");
-        stm.setInt(1, userID);
+                + "where a.recipeID = ? and a.userID = ?");
+        stm.setInt(1, recipeID);
+        stm.setInt(2, userID);
         ResultSet rs = stm.executeQuery();
         while(rs.next()) {
             rating = new RatingDTO();
@@ -92,9 +93,32 @@ public class RatingDAO {
         con.close();
     }
     
-    public double totalRating() throws SQLException {
+    public int totalRating(int recipeID) throws SQLException {
         Connection con = DBContext.makeConnection();
-        PreparedStatement stm = con.prepareStatement("select count(*) from Rating");
+        PreparedStatement stm = con.prepareStatement("select count(*) from Rating where recipeID = ?");
+        stm.setInt(1, recipeID);
+        ResultSet rs = stm.executeQuery();
+        while(rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
+    }
+    
+    public int totalScoreRecipe(int recipeID) throws SQLException {
+        Connection con = DBContext.makeConnection();
+        PreparedStatement stm = con.prepareStatement("select SUM(scoreUser) from Rating where recipeID = ?");
+        stm.setInt(1, recipeID);
+        ResultSet rs = stm.executeQuery();
+        while(rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
+    }
+    
+    public int totalUserScoreRecipe(int recipeID) throws SQLException {
+        Connection con = DBContext.makeConnection();
+        PreparedStatement stm = con.prepareStatement("select count(userID) from Rating where recipeID = ?");
+        stm.setInt(1, recipeID);
         ResultSet rs = stm.executeQuery();
         while(rs.next()) {
             return rs.getInt(1);

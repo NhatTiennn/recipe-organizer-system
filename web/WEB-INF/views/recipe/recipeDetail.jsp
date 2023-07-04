@@ -70,36 +70,44 @@
                             </div>
                             <div class="star-rating">
                                 <form action="<c:url value="/recipe/rating.do?userID=${user.userID}&recipeID=${recipe.recipeID}"/>" method="post">
-                                    <button class="fa fa-star <c:if test="${rating.scoreUser >= 1}">checked</c:if>" onclick="setRating(1)" style="cursor: pointer; border: none; background: none;" name="op" value="one"></button>
-                                    <button class="fa fa-star <c:if test="${rating.scoreUser >= 2}">checked</c:if>" onclick="setRating(2)" style="cursor: pointer; border: none; background: none;" name="op" value="two"></button>
-                                    <button class="fa fa-star <c:if test="${rating.scoreUser >= 3}">checked</c:if>" onclick="setRating(3)" style="cursor: pointer; border: none; background: none;" name="op" value="three"></button>
-                                    <button class="fa fa-star <c:if test="${rating.scoreUser >= 4}">checked</c:if>" onclick="setRating(4)" style="cursor: pointer; border: none; background: none;" name="op" value="four"></button>
-                                    <button class="fa fa-star <c:if test="${rating.scoreUser == 5}">checked</c:if>" onclick="setRating(5)" style="cursor: pointer; border: none; background: none;" name="op" value="five"></button>
-                                    </form>
-                                </div>
+                                    <c:if test="${user == null}">
+                                        <button type="button" class="fa fa-star " style="cursor: pointer; border: none; background: none;" onclick="setRating(1)" data-toggle="modal" data-target="#Login"></button>
+                                        <button type="button" class="fa fa-star " style="cursor: pointer; border: none; background: none;" onclick="setRating(2)" data-toggle="modal" data-target="#Login"></button>
+                                        <button type="button" class="fa fa-star " style="cursor: pointer; border: none; background: none;" onclick="setRating(3)" data-toggle="modal" data-target="#Login"></button>
+                                        <button type="button" class="fa fa-star " style="cursor: pointer; border: none; background: none;" onclick="setRating(4)" data-toggle="modal" data-target="#Login"></button>
+                                        <button type="button" class="fa fa-star " style="cursor: pointer; border: none; background: none;" onclick="setRating(5)" data-toggle="modal" data-target="#Login"></button>
+                                    </c:if>
+                                        
+                                    <c:if test="${user != null}">
+                                        <button type="submit" class="fa fa-star <c:if test="${rating.scoreUser >= 1}">checked</c:if>" onclick="setRating(1)" style="cursor: pointer; border: none; background: none;" name="op" value="one"></button>
+                                        <button type="submit" class="fa fa-star <c:if test="${rating.scoreUser >= 2}">checked</c:if>" onclick="setRating(2)" style="cursor: pointer; border: none; background: none;" name="op" value="two"></button>
+                                        <button type="submit" class="fa fa-star <c:if test="${rating.scoreUser >= 3}">checked</c:if>" onclick="setRating(3)" style="cursor: pointer; border: none; background: none;" name="op" value="three"></button>
+                                        <button type="submit" class="fa fa-star <c:if test="${rating.scoreUser >= 4}">checked</c:if>" onclick="setRating(4)" style="cursor: pointer; border: none; background: none;" name="op" value="four"></button>
+                                        <button type="submit" class="fa fa-star <c:if test="${rating.scoreUser == 5}">checked</c:if>" onclick="setRating(5)" style="cursor: pointer; border: none; background: none;" name="op" value="five"></button>
+                                    </c:if>
+                                </form>
                             </div>
                         </div>
-                        <div class="row mt-4 mb-4">
-                            <div class="col-4" style="display: flex;
-                                 justify-content: start;
-                                 align-items: center;
-                                 gap: 1rem;padding-left: 34px;">
-                                <span class="material-symbols-outlined" style="font-size:30px; color:black">
-                                    star
-                                </span>
+                    </div>
+                    <div class="row mt-4 mb-4">
+                        <div class="col-4" style="display: flex;
+                             justify-content: start;
+                             align-items: center;
+                             gap: 1rem;padding-left: 34px;">
+                            <span class="material-symbols-outlined" style="font-size:30px; color:black">
+                                star
+                            </span>
 
-
-                                <div>
-
-                                    <span style="color:black; ">110 ratings</span>
-                                </div>
+                            <div>
+                                <span style="color:black; ">${totalRate} ratings</span>
                             </div>
-                            <div class="col-4" style="display: flex;
-                                 justify-content: center;
-                                 align-items: center;
-                                 gap: 1rem">
-                                <i class="ti-comment bookmark" style="font-size:23px; color:black;"></i>
-                                <span style="color:black; float: right;">${noFb} Feedback</span>
+                        </div>
+                        <div class="col-4" style="display: flex;
+                             justify-content: center;
+                             align-items: center;
+                             gap: 1rem">
+                            <i class="ti-comment bookmark" style="font-size:23px; color:black;"></i>
+                            <span style="color:black; float: right;">${noFb} Feedback</span>
                         </div>
                     </div>       
 
@@ -118,25 +126,40 @@
                              justify-content: center;
                              align-items: center;
                              gap: 1rem">
-                            <i class="bi bi-heart-fill"  style="font-size:23px; color:black;cursor: pointer;"></i>
-                            <span style="padding-left: 5px;"> Like: </span>
+                            <c:if test="${user == null}">
+                                <button class="bi bi-heart"  style="font-size:23px; color:black;cursor: pointer; border: none;" 
+                                        data-toggle="modal" data-target="#Login"></button>
+                            </c:if>
+                            <c:if test="${favorite == null and user != null}">
+                                <form action="<c:url value="/save_favorite/addToFavourite.do?recipeID=${recipe.recipeID}&userID=${user.userID}"/>" method="POST">
+                                    <button class="bi bi-heart"  style="font-size:23px; color:black;cursor: pointer; border: none;" type="submit" name="op" value="Favorite"></button>
+                                </form>
+                            </c:if>
+                            <c:if test="${favorite != null and user != null}">
+                                <button class="bi bi-heart-fill"  style="font-size:23px; color:black;cursor: pointer; border: none;" 
+                                        data-toggle="modal" data-target="#RemoveFavorite"></button>
+                            </c:if>
+                            <span style="padding-left: 5px;"> Like: ${fSize}</span>
                         </div>
 
                         <div class="col-4" style="display: flex;
                              justify-content: center;
                              align-items: center;
                              gap: 1rem">
-                            <c:if test="${save == null}">
+                            <c:if test="${user == null }">
+                                <button class="bi bi-bookmark"  style="font-size:23px; color:black;cursor: pointer; border: none;" 
+                                        data-toggle="modal" data-target="#Login"></button>
+                            </c:if>
+                            <c:if test="${save == null and user != null}">
                                 <form action="<c:url value="/save_favorite/addToSaved.do?recipeID=${recipe.recipeID}&userID=${user.userID}"/>" method="POST">
                                     <button class="bi bi-bookmark"  style="font-size:23px; color:black;cursor: pointer; border: none;" type="submit" name="op" value="Save"></button>
                                 </form>
                             </c:if>
-                            <c:if test="${save != null}">
-                                <form action="<c:url value="/save_favorite/removeFromSaved.do?recipeID=${recipe.recipeID}&userID=${user.userID}"/>" method="POST">
-                                    <button class="bi bi-bookmark-fill"  style="font-size:23px; color:black;cursor: pointer; border: none;" type="submit" name="op" value="remove"></button>
-                                </form>
+                            <c:if test="${save != null and user != null}">
+                                <button class="bi bi-bookmark-fill"  style="font-size:23px; color:black;cursor: pointer; border: none;"
+                                        data-toggle="modal" data-target="#RemoveSaved"></button>
                             </c:if>
-                            <span style="padding-left: 5px;"> Saved: 10</span>
+                            <span style="padding-left: 5px;"> Saved: ${sSize}</span>
                         </div>
                     </div>
                     <p> 
@@ -239,7 +262,12 @@
                                 <input type="text" hidden name="userName" value="${user.userName}">
                                 <input type="text" class="form-control" placeholder="Enter your comment..." name="content">
                                 <p class="small mb-0" style="color: #aaa;">
-                                    <button type="submit" class="btn btn-outline-success">Post</button>
+                                    <c:if test="${user != null}">
+                                        <button type="submit" class="btn btn-outline-success">Post</button>
+                                    </c:if>
+                                    <c:if test="${user == null}">
+                                        <button type="button" data-toggle="modal" data-target="#Login" class="btn btn-outline-success">Post</button>
+                                    </c:if>
                                 </p>
                             </div>
                         </form>

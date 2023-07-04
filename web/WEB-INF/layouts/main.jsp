@@ -190,54 +190,122 @@
         </footer>
         <!-- ****** Footer Menu Area End ****** -->
 
-        <!-- Jquery-2.2.4 js -->
-        <script src="<c:url value="/js/jquery/jquery-2.2.4.min.js"/>"></script>
-        <!-- Popper js -->
-        <script src="<c:url value="/js/bootstrap/popper.min.js"/>"></script>
-        <!-- Bootstrap-4 js -->
-        <script src="<c:url value="/js/bootstrap/bootstrap.min.js"/>"></script>
-        <!-- All Plugins JS -->
-        <script src="<c:url value="/js/others/plugins.js"/>"></script>
-        <!-- Active JS -->
-        <script src="<c:url value="/js/active.js"/>"></script>
+        <!--        DIALOG REMOVING FAVORITE-->
+        <div class="modal fade" id="RemoveFavorite" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Removing this recipe will delete it permanently from favorite recipes and posts on your profile.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <form action="<c:url value="/save_favorite/removeFromFavourite.do?recipeID=${recipe.recipeID}&userID=${user.userID}"/>" method="POST">
+                            <button type="submit" name="op" value="remove" class="btn btn-primary">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    </body>
-</html>
+        <!--        DIALOG REMOVING SAVED-->      
+        <div class="modal fade" id="RemoveSaved" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Removing this recipe will delete it permanently from save recipes and posts on your profile.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <form action="<c:url value="/save_favorite/removeFromSaved.do?recipeID=${recipe.recipeID}&userID=${user.userID}"/>" method="POST">
+                            <button type="submit" name="op" value="remove" class="btn btn-primary">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--        DIALOG LOGIN TO ...-->      
+        <div class="modal fade" id="Login" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Notification</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Please sign up to do anything !!!
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="<c:url value="/user/login.do"/>"><button type="button" name="op" value="remove" class="btn btn-primary">Sign in</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
-<!--
-    var bookmarkIcon = document.querySelector("button.bi-bookmark");
-    bookmarkIcon.addEventListener("click", function () {
+            <!-- Jquery-2.2.4 js -->
+            <script src="<c:url value="/js/jquery/jquery-2.2.4.min.js"/>"></script>
+            <!-- Popper js -->
+            <script src="<c:url value="/js/bootstrap/popper.min.js"/>"></script>
+            <!-- Bootstrap-4 js -->
+            <script src="<c:url value="/js/bootstrap/bootstrap.min.js"/>"></script>
+            <!-- All Plugins JS -->
+            <script src="<c:url value="/js/others/plugins.js"/>"></script>
+            <!-- Active JS -->
+            <script src="<c:url value="/js/active.js"/>"></script>
 
-        if (bookmarkIcon.classList.contains("bi-bookmark-fill")) {
-            bookmarkIcon.classList.remove("bi-bookmark-fill");
-            bookmarkIcon.classList.add("bi-bookmark");
-        } else {
-            bookmarkIcon.classList.remove("bi-bookmark");
-            bookmarkIcon.classList.add("bi-bookmark-fill");
-        }
-    });
+        </body>
+    </html>
+
+
+    <!--
+        var bookmarkIcon = document.querySelector("button.bi-bookmark");
+        bookmarkIcon.addEventListener("click", function () {
     
-    var heart = document.querySelector("i.bi-heart-fill");
-    heart.addEventListener("click", function () {
-
-        if (heart.classList.contains("bi-heart-fill")) {
-            heart.classList.remove("bi-heart-fill");
-            heart.classList.add("bi-heart");
-        } else {
-            heart.classList.remove("bi-heart");
-            heart.classList.add("bi-heart-fill");
+            if (bookmarkIcon.classList.contains("bi-bookmark-fill")) {
+                bookmarkIcon.classList.remove("bi-bookmark-fill");
+                bookmarkIcon.classList.add("bi-bookmark");
+            } else {
+                bookmarkIcon.classList.remove("bi-bookmark");
+                bookmarkIcon.classList.add("bi-bookmark-fill");
+            }
+        });
+        
+        var heart = document.querySelector("i.bi-heart-fill");
+        heart.addEventListener("click", function () {
+    
+            if (heart.classList.contains("bi-heart-fill")) {
+                heart.classList.remove("bi-heart-fill");
+                heart.classList.add("bi-heart");
+            } else {
+                heart.classList.remove("bi-heart");
+                heart.classList.add("bi-heart-fill");
+            }
+        });
+    -->
+    <script>
+        function setRating(rating) {
+            var stars = document.getElementsByClassName("fa-star");
+            for (var i = 0; i < rating; i++) {
+                stars[i].classList.add("checked");
+            }
+            for (var i = rating; i < stars.length; i++) {
+                stars[i].classList.remove("checked");
+            }
         }
-    });
--->
-<script>
-    function setRating(rating) {
-        var stars = document.getElementsByClassName("fa-star");
-        for (var i = 0; i < rating; i++) {
-            stars[i].classList.add("checked");
-        }
-        for (var i = rating; i < stars.length; i++) {
-            stars[i].classList.remove("checked");
-        }
-    }
-</script>
+    </script>

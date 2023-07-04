@@ -9,6 +9,7 @@ import DAO.FeedbackDAO;
 import DAO.RatingDAO;
 import DAO.RecipeDAO;
 import DAO.Save_favoriteDAO;
+import DTO.FavoriteDTO;
 import DTO.FeedbackDTO;
 import DTO.RatingDTO;
 import DTO.RecipeDTO;
@@ -131,27 +132,62 @@ public class RecipeController extends HttpServlet {
     }
 
     protected void recipeDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int recipeID = Integer.parseInt(request.getParameter("recipeID"));
+        UserDTO user = (UserDTO) request.getSession().getAttribute("user");
         try {
-            int recipeID = Integer.parseInt(request.getParameter("recipeID"));
 
-            RecipeDAO rDAO = new RecipeDAO();
-            RecipeDTO recipe = rDAO.getOne(recipeID);
+            if (user == null) {
+                RecipeDAO rDAO = new RecipeDAO();
+                RecipeDTO recipe = rDAO.getOne(recipeID);
 
-            FeedbackDAO fDAO = new FeedbackDAO();
-            List<FeedbackDTO> listFeedback = fDAO.getComments(recipeID);
+                FeedbackDAO fDAO = new FeedbackDAO();
+                List<FeedbackDTO> listFeedback = fDAO.getComments(recipeID);
 
-            RatingDAO raDAO = new RatingDAO();
-            RatingDTO rating = raDAO.getRatingRecipe(recipeID);
+                RatingDAO raDAO = new RatingDAO();
+                int totalRate = raDAO.totalRating(recipeID);
+                
+                Save_favoriteDAO sfDAO = new Save_favoriteDAO();
+                int sSize = sfDAO.totalSavedORecipe(recipeID);
+                int fSize = sfDAO.totalFavoriteORecipe(recipeID);
+                
+                request.setAttribute("sSize", sSize);
+                request.setAttribute("fSize", fSize);
+                request.setAttribute("totalRate", totalRate);
+                request.setAttribute("feedbacks", listFeedback);
+                request.setAttribute("noFb", listFeedback.size());
+                request.setAttribute("recipe", recipe);
+                
+                request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
+            } else {
 
-            Save_favoriteDAO sfDAO = new Save_favoriteDAO();
-            SaveDTO save = sfDAO.getSavedRecipeID(recipeID);
+                RecipeDAO rDAO = new RecipeDAO();
+                RecipeDTO recipe = rDAO.getOne(recipeID);
 
-            request.setAttribute("save", save);
-            request.setAttribute("rating", rating);
-            request.setAttribute("feedbacks", listFeedback);
-            request.setAttribute("noFb", listFeedback.size());
-            request.setAttribute("recipe", recipe);
-            request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
+                FeedbackDAO fDAO = new FeedbackDAO();
+                List<FeedbackDTO> listFeedback = fDAO.getComments(recipeID);
+
+                RatingDAO raDAO = new RatingDAO();
+                RatingDTO rating = raDAO.getRatingRecipe(recipeID, user.getUserID());
+                int totalRate = raDAO.totalRating(recipeID);
+
+                Save_favoriteDAO sfDAO = new Save_favoriteDAO();
+                SaveDTO save = sfDAO.getSavedRecipeID(recipeID, user.getUserID());
+                FavoriteDTO favorite = sfDAO.getFavoriteRecipeID(recipeID, user.getUserID());
+                int sSize = sfDAO.totalSavedORecipe(recipeID);
+                int fSize = sfDAO.totalFavoriteORecipe(recipeID);
+
+                request.setAttribute("save", save);
+                request.setAttribute("favorite", favorite);
+                request.setAttribute("totalRate", totalRate);
+                request.setAttribute("sSize", sSize);
+                request.setAttribute("fSize", fSize);
+                request.setAttribute("rating", rating);
+                request.setAttribute("feedbacks", listFeedback);
+                request.setAttribute("noFb", listFeedback.size());
+                request.setAttribute("recipe", recipe);
+
+                request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
+            }
         } catch (Exception e) {
             request.setAttribute("controller", "error");
             request.setAttribute("action", "error");
