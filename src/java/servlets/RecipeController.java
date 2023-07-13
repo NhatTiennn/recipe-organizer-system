@@ -6,16 +6,21 @@
 package servlets;
 
 import DAO.FeedbackDAO;
+import DAO.MealPlanDAO;
 import DAO.RatingDAO;
 import DAO.RecipeDAO;
 import DAO.Save_favoriteDAO;
+import DAO.StepDAO;
 import DTO.FavoriteDTO;
 import DTO.FeedbackDTO;
+import DTO.MealPlanDTO;
 import DTO.RatingDTO;
 import DTO.RecipeDTO;
 import DTO.SaveDTO;
+import DTO.StepDTO;
 import DTO.UserDTO;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -63,6 +68,17 @@ public class RecipeController extends HttpServlet {
 
             case "rating": {
                 rating(request, response);
+                break;
+            }
+
+            case "mealPlan": {
+                mealPlan(request, response);
+                break;
+            }
+
+            case "addPlan": {
+                addPlan(request, response);
+                break;
             }
         }
     }
@@ -145,18 +161,29 @@ public class RecipeController extends HttpServlet {
 
                 RatingDAO raDAO = new RatingDAO();
                 int totalRate = raDAO.totalRating(recipeID);
-                
+                int totalScoreRecipe = raDAO.totalScoreRecipe(recipeID);
+                int totalUserScoreRecipe = raDAO.totalUserScoreRecipe(recipeID);
+                int avgStar = 0;
+                if (totalUserScoreRecipe > 0) {
+                    avgStar = Math.round(totalScoreRecipe / totalUserScoreRecipe);
+                }
+
                 Save_favoriteDAO sfDAO = new Save_favoriteDAO();
                 int sSize = sfDAO.totalSavedORecipe(recipeID);
                 int fSize = sfDAO.totalFavoriteORecipe(recipeID);
-                
+
+                StepDAO sDAO = new StepDAO();
+                List<StepDTO> step = sDAO.getStepORecipe(recipeID);
+
+                request.setAttribute("step", step);
                 request.setAttribute("sSize", sSize);
                 request.setAttribute("fSize", fSize);
+                request.setAttribute("avgStar", avgStar);
                 request.setAttribute("totalRate", totalRate);
                 request.setAttribute("feedbacks", listFeedback);
                 request.setAttribute("noFb", listFeedback.size());
                 request.setAttribute("recipe", recipe);
-                
+
                 request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
             } else {
 
@@ -169,16 +196,26 @@ public class RecipeController extends HttpServlet {
                 RatingDAO raDAO = new RatingDAO();
                 RatingDTO rating = raDAO.getRatingRecipe(recipeID, user.getUserID());
                 int totalRate = raDAO.totalRating(recipeID);
-
+                int totalScoreRecipe = raDAO.totalScoreRecipe(recipeID);
+                int totalUserScoreRecipe = raDAO.totalUserScoreRecipe(recipeID);
+                int avgStar = 0;
+                if (totalUserScoreRecipe > 0) {
+                    avgStar = Math.round(totalScoreRecipe / totalUserScoreRecipe);
+                }
                 Save_favoriteDAO sfDAO = new Save_favoriteDAO();
                 SaveDTO save = sfDAO.getSavedRecipeID(recipeID, user.getUserID());
                 FavoriteDTO favorite = sfDAO.getFavoriteRecipeID(recipeID, user.getUserID());
                 int sSize = sfDAO.totalSavedORecipe(recipeID);
                 int fSize = sfDAO.totalFavoriteORecipe(recipeID);
 
+                StepDAO sDAO = new StepDAO();
+                List<StepDTO> step = sDAO.getStepORecipe(recipeID);
+
+                request.setAttribute("step", step);
                 request.setAttribute("save", save);
                 request.setAttribute("favorite", favorite);
                 request.setAttribute("totalRate", totalRate);
+                request.setAttribute("avgStar", avgStar);
                 request.setAttribute("sSize", sSize);
                 request.setAttribute("fSize", fSize);
                 request.setAttribute("rating", rating);
@@ -359,6 +396,55 @@ public class RecipeController extends HttpServlet {
                 }
                 break;
             }
+        }
+    }
+
+    protected void addPlan(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        UserDTO user = (UserDTO) request.getSession().getAttribute("user");
+        String oop = request.getParameter("op");
+        switch (oop) {
+            case "Add": {
+                try {
+                    int savedRecipeID = Integer.parseInt(request.getParameter("savedRecipeID"));
+                    String choose = request.getParameter("choose");
+                    String year = request.getParameter("years");
+                    String month = request.getParameter("month");
+                    String day = request.getParameter("day");
+                    String date = year + "-" + month + "-" + day;
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dateAdd = sdf.parse(date);
+                    MealPlanDAO mpDAO = new MealPlanDAO();
+                    MealPlanDTO mp = new MealPlanDTO();
+                    if (choose.equalsIgnoreCase("1")) {
+                        mp.setUserID(user.getUserID());
+                        mp.setSavedRecipeID(savedRecipeID);
+                        mp.setDate(dateAdd);
+                        mpDAO.addMealPlan(mp);
+                        response.sendRedirect(request.getContextPath() + "/recipe/mealPlan.do?userID=" + user.getUserID());
+                    } else {
+                        request.setAttribute("failed", "Have something wrong here");
+                        request.getRequestDispatcher("/recipe/mealPlan.do?userID=" + user.getUserID());
+                    }
+
+                } catch (Exception e) {
+                    request.setAttribute("controller", "error");
+                    request.setAttribute("action", "error");
+                    request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
+                }
+                break;
+            }
+        }
+    }
+
+    private void mealPlan(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int userID = Integer.parseInt(request.getParameter("userID"));
+            Save_favoriteDAO sfDAO = new Save_favoriteDAO();
+            List<SaveDTO> saved = sfDAO.getSaved(userID);
+            request.setAttribute("list", saved);
+            request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

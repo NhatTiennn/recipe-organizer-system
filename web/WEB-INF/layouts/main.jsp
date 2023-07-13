@@ -15,6 +15,7 @@
         <link rel="icon" href="<c:url value="/img/core-img/favicon.icon"/>">
 
         <!-- Core Stylesheet -->
+        <link rel="stylesheet" href="<c:url value="/calendar/css/style.css"/>">
         <link href="<c:url value="/style.css"/>" rel="stylesheet">
 
         <!-- Responsive CSS -->
@@ -24,6 +25,17 @@
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
 
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <!--
+        
+        -->        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet"><!--
+        
+        -->        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><!--
+        
+        -->        <link rel="stylesheet" href="<c:url value="/calendar/css/style.css"/>">
     </head>
 
     <body>
@@ -115,7 +127,7 @@
                     <!-- Logo Area Start -->
                     <div class="col-12">
                         <div class="logo_area text-center">
-                            <a href="mainpage.jsp" class="yummy-logo">Flavorful Creations</a>
+                            <a href="<c:url value="/home/index.do"/>" class="yummy-logo">Flavorful Creations</a>
                         </div>
                     </div>
                 </div>
@@ -151,7 +163,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a class="nav-link" href="planpage.jsp">Meal Plan</a>
+                                        <a class="nav-link" href="<c:url value="/recipe/mealPlan.do?userID=${user.userID}"/>">Meal Plan</a>
                                     </li>
 
                                 </ul>
@@ -252,60 +264,130 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <a href="<c:url value="/user/login.do"/>"><button type="button" name="op" value="remove" class="btn btn-primary">Sign in</button></a>
-                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <!-- Jquery-2.2.4 js -->
-            <script src="<c:url value="/js/jquery/jquery-2.2.4.min.js"/>"></script>
-            <!-- Popper js -->
-            <script src="<c:url value="/js/bootstrap/popper.min.js"/>"></script>
-            <!-- Bootstrap-4 js -->
-            <script src="<c:url value="/js/bootstrap/bootstrap.min.js"/>"></script>
-            <!-- All Plugins JS -->
-            <script src="<c:url value="/js/others/plugins.js"/>"></script>
-            <!-- Active JS -->
-            <script src="<c:url value="/js/active.js"/>"></script>
+        <!-- Jquery-2.2.4 js -->
+        <script src="<c:url value="/js/jquery/jquery-2.2.4.min.js"/>"></script>
+        <!-- Popper js -->
+        <script src="<c:url value="/js/bootstrap/popper.min.js"/>"></script>
+        <!-- Bootstrap-4 js -->
+        <script src="<c:url value="/js/bootstrap/bootstrap.min.js"/>"></script>
+        <!-- All Plugins JS -->
+        <script src="<c:url value="/js/others/plugins.js"/>"></script>
+        <!-- Active JS -->
+        <script src="<c:url value="/js/active.js"/>"></script>
 
-        </body>
-    </html>
+<!--        <script src="<c:url value="/calendar/js/jquery.min.js"/>"></script>-->
+        <script src="<c:url value="/calendar/js/popper.js"/>"></script>
+        <script src="<c:url value="/calendar/js/bootstrap.min.js"/>"></script>
+        <script src="<c:url value="/calendar/js/main.js"/>"></script>
+    </body>
+</html>
 
 
-    <!--
-        var bookmarkIcon = document.querySelector("button.bi-bookmark");
-        bookmarkIcon.addEventListener("click", function () {
-    
-            if (bookmarkIcon.classList.contains("bi-bookmark-fill")) {
-                bookmarkIcon.classList.remove("bi-bookmark-fill");
-                bookmarkIcon.classList.add("bi-bookmark");
-            } else {
-                bookmarkIcon.classList.remove("bi-bookmark");
-                bookmarkIcon.classList.add("bi-bookmark-fill");
-            }
-        });
-        
-        var heart = document.querySelector("i.bi-heart-fill");
-        heart.addEventListener("click", function () {
-    
-            if (heart.classList.contains("bi-heart-fill")) {
-                heart.classList.remove("bi-heart-fill");
-                heart.classList.add("bi-heart");
-            } else {
-                heart.classList.remove("bi-heart");
-                heart.classList.add("bi-heart-fill");
-            }
-        });
-    -->
-    <script>
-        function setRating(rating) {
-            var stars = document.getElementsByClassName("fa-star");
-            for (var i = 0; i < rating; i++) {
-                stars[i].classList.add("checked");
-            }
-            for (var i = rating; i < stars.length; i++) {
-                stars[i].classList.remove("checked");
-            }
+<!--
+    var bookmarkIcon = document.querySelector("button.bi-bookmark");
+    bookmarkIcon.addEventListener("click", function () {
+
+        if (bookmarkIcon.classList.contains("bi-bookmark-fill")) {
+            bookmarkIcon.classList.remove("bi-bookmark-fill");
+            bookmarkIcon.classList.add("bi-bookmark");
+        } else {
+            bookmarkIcon.classList.remove("bi-bookmark");
+            bookmarkIcon.classList.add("bi-bookmark-fill");
         }
-    </script>
+    });
+    
+    var heart = document.querySelector("i.bi-heart-fill");
+    heart.addEventListener("click", function () {
+
+        if (heart.classList.contains("bi-heart-fill")) {
+            heart.classList.remove("bi-heart-fill");
+            heart.classList.add("bi-heart");
+        } else {
+            heart.classList.remove("bi-heart");
+            heart.classList.add("bi-heart-fill");
+        }
+    });
+-->
+<script>
+    function setRating(rating) {
+        var stars = document.getElementsByClassName("rate");
+        for (var i = 0; i < rating; i++) {
+            stars[i].classList.add("checked");
+        }
+        for (var i = rating; i < stars.length; i++) {
+            stars[i].classList.remove("checked");
+        }
+    }
+
+
+//    document.addEventListener('DOMContentLoaded', function () {
+//        var tableDates = document.querySelectorAll('.table-date');
+//        var inputIndex = 1;
+//
+//        // Duy?t qua t?ng ô và thêm th? input
+//        for (var i = 1; i < tableDates.length; i++) {
+//            var tableDate = tableDates[i];
+//
+//            // Ki?m tra n?u class ch?a "nil"
+//            if (tableDate.classList.contains('nil')) {
+//                continue; 
+//            }
+//
+//            var inputValue = tableDate.textContent;
+//
+//            
+//            var inputElement = document.createElement('input');
+//            inputElement.setAttribute('disable', );
+//            inputElement.setAttribute('name', '' + 'day');
+//            inputElement.setAttribute('value', '' + inputIndex);
+//            inputElement.setAttribute('style', 'border: none; background: none; width:16px');
+//            inputElement.value = inputValue;
+//
+//            tableDate.innerHTML = '';
+//            tableDate.appendChild(inputElement);
+//
+//            inputIndex++;
+//        }
+//    });
+    document.addEventListener('DOMContentLoaded', function () {
+        var tableDates = document.querySelectorAll('.table-date');
+        var inputIndex = 1; // Bi?n m?i ?? theo dõi s? l??ng input th?c t?
+
+        // Duy?t qua t?ng ô và thêm th? input
+        for (var i = 0; i < tableDates.length; i++) {
+            var tableDate = tableDates[i];
+
+            // Ki?m tra n?u class ch?a "nil"
+            if (tableDate.classList.contains('nil')) {
+                continue; // B? qua ô có l?p "table-date nil"
+            }
+
+            var inputValue = tableDate.textContent;
+
+            // T?o th? input và gán giá tr? value
+            var inputElement = document.createElement('input');
+            inputElement.setAttribute('type', 'text');
+            inputElement.setAttribute('name', 'day');
+            inputElement.setAttribute('value', '' + inputIndex);
+            inputElement.setAttribute('style', 'border: none; background: none; width:16px');
+            inputElement.value = inputValue;
+
+            // Thay th? n?i dung c?a ô b?ng th? input
+            tableDate.innerHTML = '';
+            tableDate.appendChild(inputElement);
+
+            inputIndex++; // T?ng giá tr? c?a inputIndex
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var spanValue = document.getElementById("label").innerText;
+        document.getElementById("year").value = spanValue;
+    });
+</script>

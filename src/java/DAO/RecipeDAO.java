@@ -58,6 +58,10 @@ public class RecipeDAO {
         PreparedStatement stm = con.prepareStatement("select * from [Recipe] a join [User] b"
                 + " on a.userID = b.userID order by [recipeID] "
                 + "offset ? rows fetch next 9 rows only"
+                
+//                + "SELECT recipeID, SUM(userID) AS userCount, SUM(scoreUser) AS totalScore"
+//                + "FROM Rating"
+//                + "GROUP BY recipeID"
         );
         stm.setInt(1, (index - 1) * 9);
         ResultSet rs = stm.executeQuery();
