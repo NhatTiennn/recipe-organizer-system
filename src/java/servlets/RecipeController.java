@@ -6,14 +6,18 @@
 package servlets;
 
 import DAO.FeedbackDAO;
+import DAO.IngredientDAO;
 import DAO.MealPlanDAO;
+import DAO.NutritionalDAO;
 import DAO.RatingDAO;
 import DAO.RecipeDAO;
 import DAO.Save_favoriteDAO;
 import DAO.StepDAO;
 import DTO.FavoriteDTO;
 import DTO.FeedbackDTO;
+import DTO.IngredientDTO;
 import DTO.MealPlanDTO;
+import DTO.NutritionalDTO;
 import DTO.RatingDTO;
 import DTO.RecipeDTO;
 import DTO.SaveDTO;
@@ -172,9 +176,17 @@ public class RecipeController extends HttpServlet {
                 int sSize = sfDAO.totalSavedORecipe(recipeID);
                 int fSize = sfDAO.totalFavoriteORecipe(recipeID);
 
+                IngredientDAO ingreDAO = new IngredientDAO();
+                List<IngredientDTO> ingredient = ingreDAO.getIngreORecipe(recipeID);
+
+                NutritionalDAO nutriDAO = new NutritionalDAO();
+                NutritionalDTO nutritional = nutriDAO.getNutriOneRecipe(recipeID);
+
                 StepDAO sDAO = new StepDAO();
                 List<StepDTO> step = sDAO.getStepORecipe(recipeID);
 
+                request.setAttribute("nutritional", nutritional);
+                request.setAttribute("ingredient", ingredient);
                 request.setAttribute("step", step);
                 request.setAttribute("sSize", sSize);
                 request.setAttribute("fSize", fSize);
@@ -208,9 +220,17 @@ public class RecipeController extends HttpServlet {
                 int sSize = sfDAO.totalSavedORecipe(recipeID);
                 int fSize = sfDAO.totalFavoriteORecipe(recipeID);
 
+                IngredientDAO ingreDAO = new IngredientDAO();
+                List<IngredientDTO> ingredient = ingreDAO.getIngreORecipe(recipeID);
+
+                NutritionalDAO nutriDAO = new NutritionalDAO();
+                NutritionalDTO nutritional = nutriDAO.getNutriOneRecipe(recipeID);
+
                 StepDAO sDAO = new StepDAO();
                 List<StepDTO> step = sDAO.getStepORecipe(recipeID);
 
+                request.setAttribute("nutritional", nutritional);
+                request.setAttribute("ingredient", ingredient);
                 request.setAttribute("step", step);
                 request.setAttribute("save", save);
                 request.setAttribute("favorite", favorite);

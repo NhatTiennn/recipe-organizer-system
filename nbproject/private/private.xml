@@ -3,16 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/JavaCode/SWP391/main-flow/src/java/DAO/FeedbackDAO.java</file>
-            <file>file:/C:/JavaCode/SWP391/main-flow/src/java/servlets/Save_FavoriteController.java</file>
-            <file>file:/C:/JavaCode/SWP391/main-flow/web/WEB-INF/layouts/main.jsp</file>
-            <file>file:/C:/JavaCode/SWP391/main-flow/src/java/DAO/UserDAO.java</file>
-            <file>file:/C:/JavaCode/SWP391/main-flow/web/WEB-INF/views/recipe/recipeDetail.jsp</file>
-            <file>file:/C:/JavaCode/SWP391/main-flow/web/WEB-INF/views/save_favorite/saved.jsp</file>
-            <file>file:/C:/JavaCode/SWP391/main-flow/src/java/servlets/RecipeController.java</file>
+            <file>file:/C:/JavaCode/SWP391/main-flow/src/java/DAO/NutritionalDAO.java</file>
             <file>file:/C:/JavaCode/SWP391/main-flow/src/java/DAO/RatingDAO.java</file>
-            <file>file:/C:/JavaCode/SWP391/main-flow/src/java/DAO/Save_favoriteDAO.java</file>
-            <file>file:/C:/JavaCode/SWP391/main-flow/src/java/DTO/FeedbackDTO.java</file>
         </group>
     </open-files>
 </project-private>

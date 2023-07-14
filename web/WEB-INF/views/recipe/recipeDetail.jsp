@@ -187,53 +187,44 @@
                         <div class="col-2 col-md-2 col-lg-12 mb-2">
                             <h4 style="background-color: #fafafa; text-align: center;" > <span><b>Nutrional</b></span></h4>
                         </div>
+
                         <div class="col-2 col-md-2 col-lg-2 "
                              style="background-color: beige;border-style: solid;border-width: 2px 0px 2px 2px;text-align: center;">
                             <span><b>kcal</b></span><br>
-                            550
+                            ${nutritional.calories}g
                         </div>
                         <div class="col-2 col-md-2 col-lg-2"
                              style="background-color: beige;border-style: solid;border-width: 2px 0px 2px 2px;text-align: center;">
                             <span><b>fat</b></span><br>
-                            20
+                            ${nutritional.fat}g
                         </div>
                         <div class="col-2 col-md-2 col-lg-2"
                              style="background-color: beige;border-style: solid;border-width: 2px 0px 2px 2px; text-align: center; ">
                             <span><b>protein</b></span><br>
-                            1
+                            ${nutritional.proteins}g
                         </div>
                         <div class="col-2 col-md-2 col-lg-2"
                              style="background-color: beige;border-style: solid;border-width:2px 0px 2px 2px;text-align: center; ">
                             <span><b>carbs</b></span><br>
-                            5
+                            ${nutritional.carb}g
                         </div>
                         <div class="col-2 col-md-2 col-lg-2"
                              style="background-color: beige;border-style: solid;border-width: 2px 0px 2px 2px;text-align: center; ">
                             <span><b>sugars</b></span><br>
-                            0g
-                        </div>
-                        <div class="col-2 col-md-2 col-lg-2"
-                             style="background-color: beige;border-style: solid;border-width: 2px 2px 2px 2px;text-align: center;  ">
-                            <span><b>salt</b></span><br>
-                            1.42g
-
+                            ${nutritional.sugar}g
                         </div>
                     </div>
                 </div>
             </div>
 
         </div>
-        <div class="row">
+        <div class="row"> 
             <div class="col-12 col-md-5 col-lg-5 mt-5">
                 <h4 style="background-color: #fafafa">Ingredients</h4>
                 <ul style="background-color: #fafafa">
-                    <li>- 450g chicken breasts</li>
-                    <li>- 120g cream cheese</li>
-                    <li>- 2 tbsp green pesto</li>
-                    <li>- 2 tbsp Parmesan cheese, finely grated</li>
-                    <li>- ½ tsp avocado oil</li>
-                    <li>- ¼ tsp sea salt</li>
-                    <li>- ¼ tsp ground black pepper</li>
+                    <c:forEach var="ingre" items="${ingredient}">
+                        <li style="font-size: 17px">- ${ingre.quantity} ${ingre.unit}|${ingre.ingredientName}</li>
+                        </c:forEach>
                 </ul>
             </div>
             <div class="col-12 col-md-5 col-lg-5 mt-5">
